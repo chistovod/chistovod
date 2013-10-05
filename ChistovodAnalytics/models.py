@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Lot(models.Model):
-    sid = models.CharField(max_length=20)
     notification_number = models.CharField(max_length=19)
     create_date = models.DateTimeField()
     publish_date = models.DateTimeField()
@@ -10,7 +9,7 @@ class Lot(models.Model):
     lot_name = models.CharField(max_length=200)
     href = models.CharField(max_length=200)
     max_price = models.FloatField()
-    reg_num = models.CharField(max_length=15)
+    reg_num = models.BigIntegerField()
     ordinal_number = models.IntegerField()
     final_price = models.FloatField(null=True)
     contract_sign_date = models.DateTimeField(null=True)

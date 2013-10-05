@@ -14,7 +14,6 @@ class Lot(models.Model):
     ordinal_number = models.IntegerField()
 
 
-
 class Customer(models.Model):
     registration_number = models.BigIntegerField()
     inn = models.BigIntegerField()

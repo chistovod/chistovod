@@ -1,6 +1,8 @@
 from datetime import datetime
 from operator import itemgetter
 
+identity = lambda x: x
+
 
 def strip(s):
     return s.strip()
@@ -21,11 +23,11 @@ def d(date):
 
 
 def read_lot(xml):
-    get_xml_value = lambda *args: get_value(xml, *args)
     return {
-        'max_price': get_value('./t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum),
-        'sid': None,
-        'lot_name': None}
+        'max_price': get_value(xml, './t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum),
+        'sid': get_value(xml, './t:sid/text()', int),
+        'lot_name': get_value(xml, './t:subject/text()'),
+        'ordinal_number': get_value(xml, './t:ordinalNumber/text()', int)}
 
 
 def read_notification(xml):
@@ -41,7 +43,8 @@ def read_notification(xml):
         'final_price': None,
         'contract_sign_date': None,
         'execution': None}
-    lots_xml = get_value(xml, './t:lots', transform=lambda x: x)
+
+    lots_xml = get_value(xml, './t:lots', transform=identity)
     lots = [read_lot(lot_xml) for lot_xml in lots_xml.iterchildren()]
 
     return [dict(lot.items() + notification.items()) for lot in lots]

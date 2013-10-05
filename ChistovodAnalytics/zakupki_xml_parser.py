@@ -19,7 +19,7 @@ def dt(date):
 def read_notification(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     return {
-        'id': get_value(xml, './t:id/text()', int),
+        'notification_id': get_value(xml, './t:id/text()', int),
         'notification_number': get_xml_value('./t:notificationNumber/text()'),
         'create_date': get_xml_value('./t:createDate/text()', dt),
         'publish_date': get_xml_value('./t:publishDate/text()', dt),

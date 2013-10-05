@@ -1,8 +1,13 @@
+"""
+not used
+"""
+
 import os
 from zipfile import ZipFile
 from lxml import etree
 from zakupki_xml_parser import read_notification
 import pprint
+from models import NotificationOK
 
 path = '/home/marat/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'
 files = [f for f in os.listdir(path) if f.endswith('.zip')]
@@ -12,5 +17,6 @@ with ZipFile(first) as zip_file:
     with zip_file.open(members[0]) as f:
         for event, xml in etree.iterparse(f, tag='{http://zakupki.gov.ru/oos/export/1}notificationOK'):
             if event == 'end':
-                document = read_notification(xml)
-                pprint.pprint(document)
+                notification = read_notification(xml)
+                pprint.pprint(notification)
+                NotificationOK(**notification).save()

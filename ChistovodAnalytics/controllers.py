@@ -3,10 +3,11 @@ from zipfile import ZipFile
 import os
 from zakupki_xml_parser import read_notification
 from lxml import etree
-
+from os.path import expanduser
 
 def parse_and_save_notifications():
-    path = '/home/marat/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'
+    home = expanduser("~")
+    path = home + '/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'
     files = [f for f in os.listdir(path) if f.endswith('.zip')]
     first = os.path.join(path, files[0])
 

@@ -25,7 +25,6 @@ def d(date):
 def read_lot(xml):
     return {
         'max_price': get_value(xml, './t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum),
-        'sid': get_value(xml, './t:sid/text()', int),
         'lot_name': get_value(xml, './t:subject/text()'),
         'ordinal_number': get_value(xml, './t:ordinalNumber/text()', int)}
 

@@ -4,11 +4,14 @@ from lxml import etree
 from os.path import expanduser
 from zakupki_xml_parser import read_notification
 from models import Lot
+import re
+
+VALID_NOTIFICATIONS = re.compile('\}notification(OK|EF|ZK|PO)$')
 
 
 def parse_file(f):
     for event, xml in etree.iterparse(f):
-        if str(xml.tag).endswith('}notificationOK'):
+        if VALID_NOTIFICATIONS.search(str(xml.tag)):
             for lot_dict in read_notification(xml):
                 Lot(**lot_dict).save()
 

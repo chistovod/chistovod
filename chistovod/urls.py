@@ -16,6 +16,8 @@ urlpatterns = patterns('',
 
     url(r'^parse/$', 'ChistovodAnalytics.views.parse'),
 
-    url(r'^notificationOK/$', 'ChistovodAnalytics.views.notificationOK')
+    url(r'^notificationOK/$', 'ChistovodAnalytics.views.notificationOK'),
+
+    url(r'^plot/$', 'ChistovodAnalytics.views.plot')
 )
 

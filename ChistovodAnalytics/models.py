@@ -23,13 +23,11 @@ class Supplier(models.Model):
     organization_form = models.CharField()
     organization_name = models.CharField()
 
-
 class Contact(models.Model):
-    last_name = models.CharField()
-    first_name = models.CharField()
-    middle_name = models.CharField()
-
-    email = models.CharField()
-    phone = models.CharField()
-    fax = models.CharField()
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    phone = models.CharField(max_length=50)
+    fax = models.CharField(max_length=50)
 

@@ -1,15 +1,17 @@
 from django.db import models
 
 
-class NotificationOK(models.Model):
-    notification_id = models.IntegerField()
+class Lot(models.Model):
+    sid = models.CharField(max_length=20)
     notification_number = models.CharField(max_length=19)
     create_date = models.DateTimeField()
     publish_date = models.DateTimeField()
-    order_name = models.CharField(max_length=200)
+    notification_name = models.CharField(max_length=200)
+    lot_name = models.CharField(max_length=200)
     href = models.CharField(max_length=200)
-    reg_num = models.IntegerField()
     max_price = models.FloatField()
+    reg_num = models.CharField(max_length=15)
+
 
 
 class Customer(models.Model):

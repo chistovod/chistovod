@@ -2,8 +2,8 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" hash="1135867690">
     <data-source source="LOCAL" name="Django default" uuid="cb45596c-68c4-446b-a35b-53ba17c03688">
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/zakupki</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:zakupki</jdbc-url>
       <libraries />
     </data-source>
   </component>

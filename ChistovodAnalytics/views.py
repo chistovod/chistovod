@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 import os
 from zipfile import ZipFile
+from lxml import etree
 
 
 def parse(request):
@@ -11,5 +12,13 @@ def parse(request):
     with ZipFile(first) as zip_file:
         members = zip_file.namelist()
         with zip_file.open(members[0]) as f:
-            txt = f.readlines()
-            return render_to_response('parse.html', {'key': txt})
+
+            #txt = ''.join(f.readlines())
+
+            root = etree.fromstring(f.read())
+            t = ''
+            for notification in root.iterchildren():
+                type = notification.tag.split('}')[1]
+                id_ = notification.find('{http://zakupki.gov.ru/oos/export/1}oos:id')
+                t += '%s=%s:' % (type, id_)
+            return render_to_response('parse.html', {'key': t })

@@ -8,8 +8,10 @@ from lxml import etree
 from zakupki_xml_parser import read_notification
 import pprint
 from models import NotificationOK
+from os.path import expanduser
 
-path = '/home/marat/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'
+home = expanduser("~")
+path = home + '/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'
 files = [f for f in os.listdir(path) if f.endswith('.zip')]
 first = os.path.join(path, files[0])
 with ZipFile(first) as zip_file:

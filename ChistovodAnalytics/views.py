@@ -1,12 +1,12 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from controllers import parse_and_save_notifications
+from controllers import process_all_files
 from django.core import serializers
 from models import NotificationOK
 
 
 def parse(request):
-    parse_and_save_notifications()
+    process_all_files()
     return render_to_response('parse.html')
 
 

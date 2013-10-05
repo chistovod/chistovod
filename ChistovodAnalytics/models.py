@@ -11,3 +11,20 @@ class NotificationOK(models.Model):
     reg_num = models.IntegerField()
     max_price = models.FloatField()
 
+
+class Supplier(models.Model):
+    inn = models.CharField()
+    participant_type = models.CharField()
+    organization_form = models.CharField()
+    organization_name = models.CharField()
+
+
+class Contract(models.Model):
+    last_name = models.CharField()
+    first_name = models.CharField()
+    middle_name = models.CharField()
+
+    email = models.CharField()
+    phone = models.CharField()
+    fax = models.CharField()
+    status = models.CharField()

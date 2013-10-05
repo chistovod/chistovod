@@ -29,3 +29,7 @@ def read_notification(xml):
         'max_price': get_xml_value(
             './t:lots/t:lot/t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum)
     }
+
+def read_protocol(xml):
+    get_xml_value = lambda *args: get_value(xml, *args)
+

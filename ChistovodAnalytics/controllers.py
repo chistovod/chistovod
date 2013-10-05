@@ -5,6 +5,7 @@ from zakupki_xml_parser import read_notification
 from lxml import etree
 from os.path import expanduser
 
+
 def parse_and_save_notifications():
     home = expanduser("~")
     path = home + '/zakupki.gov.ru/docs/Sankt-Peterburg/notifications'

@@ -5,10 +5,9 @@ from os.path import expanduser
 from zakupki_xml_parser import read_notification
 
 def parse_file(f):
-    for event, xml in etree.iterparse(f, tag='notificationOK'):
-        if event == 'end':
+    for event, xml in etree.iterparse(f):
+        if str(xml.tag).endswith('}notificationOK'):
             notification = read_notification(xml)
-            print notification
             #NotificationOK(**notification)
 
 def process_file(f, filename):

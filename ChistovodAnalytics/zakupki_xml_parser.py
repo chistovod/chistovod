@@ -33,7 +33,7 @@ def read_lot(xml):
         'ordinal_number': get_value(xml, './t:ordinalNumber/text()', int)}
 
 
-def read_notifications(xml):
+def read_lots_from_notification(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     notification = {
         'notification_number': get_xml_value('./t:notificationNumber/text()'),
@@ -63,10 +63,6 @@ def read_contract(xml):
         'execution': "-".join([get_xml_value('./t:execution/t:year/text()'),
                                get_xml_value('./t:execution/t:month/text()')])
     }
-
-
-def read_protocol(xml):
-    get_xml_value = lambda *args: get_value(xml, *args)
 
 
 def read_customer(xml):

@@ -2,7 +2,9 @@ import os
 import re
 from zipfile import ZipFile
 from lxml import etree
+
 from os.path import expanduser
+
 from zakupki_xml_parser import *
 #from models import *
 
@@ -12,7 +14,7 @@ VALID_NOTIFICATIONS = re.compile('\}notification(OK|EF|ZK|PO)$')
 def parse_file(f):
     for event, xml in etree.iterparse(f):
         if VALID_NOTIFICATIONS.search(str(xml.tag)):
-            for lot_dict in read_notifications(xml):
+            for lot_dict in read_lots_from_notification(xml):
                 #Lot(**lot_dict).save()
                 print lot_dict
         elif str(xml.tag).endswith('}organization'):
@@ -25,7 +27,7 @@ def process_file(f, filename):
     # ignoring non-notifications for now #####
     if filename.find('notification') < 0 and filename.find('organization') < 0:
         return
-    ##########################################
+        ##########################################
 
     if filename.endswith('.xml'):
         print "Parsing file", filename

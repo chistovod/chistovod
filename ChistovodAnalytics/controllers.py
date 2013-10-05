@@ -4,21 +4,24 @@ from lxml import etree
 from os.path import expanduser
 from zakupki_xml_parser import read_notification
 
+
 def parse_file(f):
     for event, xml in etree.iterparse(f):
         if str(xml.tag).endswith('}notificationOK'):
             notification = read_notification(xml)
             #NotificationOK(**notification)
 
+
 def process_file(f, filename):
     # ignoring non-notifications for now #####
-    if filename.find('notification')<0:
+    if filename.find('notification') < 0:
         return
-    ##########################################
+        ##########################################
 
     if filename.endswith('.xml'):
         print "Parsing file", filename
         parse_file(f)
+
 
 def process_any_file(file):
     if file.endswith('.zip'):
@@ -38,6 +41,7 @@ def process_all_files():
         for file in files:
             filepath = os.path.join(root, file)
             process_any_file(filepath)
+
 
 if __name__ == "__main__":
     process_all_files()

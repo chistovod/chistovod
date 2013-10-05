@@ -39,3 +39,5 @@ nosetests.xml
 .idea/misc.xml
 
 .idea/chistovod.iml
+
+*.sqlite

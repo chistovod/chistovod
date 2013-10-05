@@ -20,19 +20,32 @@ def d(date):
     return datetime.strptime(date.strip(), '%Y-%m-%d')
 
 
-def read_notification(xml):
+def read_lot(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     return {
-        'notification_id': get_xml_value('./t:id/text()', int),
+        'max_price': get_value('./t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum),
+        'sid': None,
+        'lot_name': None}
+
+
+def read_notification(xml):
+    get_xml_value = lambda *args: get_value(xml, *args)
+    notification = {
         'notification_number': get_xml_value('./t:notificationNumber/text()'),
         'create_date': get_xml_value('./t:createDate/text()', dt),
         'publish_date': get_xml_value('./t:publishDate/text()', dt),
-        'order_name': get_xml_value('./t:orderName/text()'),
+        'notification_name': get_xml_value('./t:orderName/text()'),
         'href': get_xml_value('./t:href/text()'),
         'reg_num': get_xml_value('./t:order/t:placer/t:regNum/text()', int),
-        'max_price': get_xml_value(
-            './t:lots/t:lot/t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum)
-    }
+
+        'final_price': None,
+        'contract_sign_date': None,
+        'execution': None}
+    lots_xml = get_value(xml, './t:lots', transform=lambda x: x)
+    lots = [read_lot(lot_xml) for lot_xml in lots_xml.iterchildren()]
+
+    return [dict(lot.items() + notification.items()) for lot in lots]
+
 
 
 def read_contracts(xml):

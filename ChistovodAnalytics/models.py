@@ -11,6 +11,7 @@ class Lot(models.Model):
     href = models.CharField(max_length=200)
     max_price = models.FloatField()
     reg_num = models.CharField(max_length=15)
+    ordinal_number = models.IntegerField()
 
 
 

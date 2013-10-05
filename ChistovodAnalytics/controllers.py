@@ -1,18 +1,20 @@
 import os
 import re
 from zipfile import ZipFile
-from lxml import etree
 
 from os.path import expanduser
 
+from lxml import etree
+
 from zakupki_xml_parser import *
+
 #from models import *
 
 VALID_NOTIFICATIONS = re.compile('\}notification(OK|EF|ZK|PO)$')
 
 
 def parse_file(f):
-    for event, xml in etree.iterparse(f):
+    for event, xml in etree.iterparse(f, huge_tree=True):
         if VALID_NOTIFICATIONS.search(str(xml.tag)):
             for lot_dict in read_lots_from_notification(xml):
                 #Lot(**lot_dict).save()

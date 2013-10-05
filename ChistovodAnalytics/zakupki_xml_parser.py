@@ -2,14 +2,14 @@ from datetime import datetime
 from operator import itemgetter
 
 
-def get_value(xml, xpath, transform=lambda x: x, aggregate=itemgetter(0)):
+def strip(s):
+    return s.strip()
+
+
+def get_value(xml, xpath, transform=strip, aggregate=itemgetter(0)):
     return aggregate([transform(x) for x in (xml.xpath(xpath,
                                                        namespaces={'t': 'http://zakupki.gov.ru/oos/types/1'},
                                                        smart_strings=False))])
-
-
-def strip(s):
-    return s.strip()
 
 
 def dt(date):

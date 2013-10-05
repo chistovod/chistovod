@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from controllers import process_all_files
 from django.core import serializers
-from models import NotificationOK
+from models import Lot
 
 
 def parse(request):
@@ -11,8 +11,8 @@ def parse(request):
 
 
 def notificationOK(request):
-    return render_to_response('notificationOK.html', {'data':NotificationOK.objects.all()})
+    return render_to_response('notificationOK.html', {'data': Lot.objects.all()})
 
 
 def plot(request):
-    return render_to_response('plot.html', {'data': NotificationOK.objects.all()})
+    return render_to_response('plot.html', {'data': Lot.objects.all()})

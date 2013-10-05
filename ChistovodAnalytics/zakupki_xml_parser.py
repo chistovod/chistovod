@@ -42,13 +42,12 @@ def read_notification(xml):
 
         'final_price': None,
         'contract_sign_date': None,
-        'execution': None}
+        'execution_date': None}
 
     lots_xml = get_value(xml, './t:lots', transform=identity)
     lots = [read_lot(lot_xml) for lot_xml in lots_xml.iterchildren()]
 
     return [dict(lot.items() + notification.items()) for lot in lots]
-
 
 
 def read_contracts(xml):

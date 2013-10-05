@@ -12,6 +12,9 @@ class Lot(models.Model):
     max_price = models.FloatField()
     reg_num = models.CharField(max_length=15)
     ordinal_number = models.IntegerField()
+    final_price = models.FloatField(null=True)
+    contract_sign_date = models.DateTimeField(null=True)
+    execution_date = models.DateTimeField(null=True)
 
 
 class Customer(models.Model):

@@ -3,13 +3,14 @@ from zipfile import ZipFile
 from lxml import etree
 from os.path import expanduser
 from zakupki_xml_parser import read_notification
+from models import Lot
 
 
 def parse_file(f):
     for event, xml in etree.iterparse(f):
         if str(xml.tag).endswith('}notificationOK'):
-            notification = read_notification(xml)
-            #NotificationOK(**notification)
+            for lot_dict in read_notification(xml):
+                Lot(**lot_dict).save()
 
 
 def process_file(f, filename):

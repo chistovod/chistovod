@@ -11,6 +11,11 @@ class NotificationOK(models.Model):
     reg_num = models.IntegerField()
     max_price = models.FloatField()
 
+class Customer(models.Model):
+    registration_number = models.BigIntegerField()
+    inn = models.BigIntegerField()
+    okato = models.IntegerField()
+    name = models.CharField(max_length=200)
 
 class Supplier(models.Model):
     inn = models.CharField()

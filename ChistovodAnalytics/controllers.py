@@ -2,22 +2,27 @@ import os
 from zipfile import ZipFile
 from lxml import etree
 from os.path import expanduser
-from zakupki_xml_parser import read_notification
-from models import Lot
+from zakupki_xml_parser import *
+#from models import *
 
 
 def parse_file(f):
     for event, xml in etree.iterparse(f):
         if str(xml.tag).endswith('}notificationOK'):
-            for lot_dict in read_notification(xml):
-                Lot(**lot_dict).save()
+            for lot_dict in read_notifications(xml):
+                #Lot(**lot_dict).save()
+                print lot_dict
+        elif str(xml.tag).endswith('}organization'):
+            cust_dict = read_customer(xml)
+            #Customer(**cust_dict).save()
+            print cust_dict
 
 
 def process_file(f, filename):
     # ignoring non-notifications for now #####
-    if filename.find('notification') < 0:
+    if filename.find('notification') < 0 and filename.find('organization') < 0:
         return
-        ##########################################
+    ##########################################
 
     if filename.endswith('.xml'):
         print "Parsing file", filename

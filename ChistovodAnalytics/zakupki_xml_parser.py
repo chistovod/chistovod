@@ -9,9 +9,13 @@ def strip(s):
 
 
 def get_value(xml, xpath, transform=strip, aggregate=itemgetter(0)):
-    return aggregate([transform(x) for x in (xml.xpath(xpath,
-                                                       namespaces={'t': 'http://zakupki.gov.ru/oos/types/1'},
-                                                       smart_strings=False))])
+    try:
+        return aggregate([transform(x) for x in (xml.xpath(xpath,
+                                                           namespaces={'t': 'http://zakupki.gov.ru/oos/types/1'},
+                                                           smart_strings=False))])
+    except:
+        print "ERROR:", xml, xpath
+        raise
 
 
 def dt(date):
@@ -30,7 +34,7 @@ def read_lot(xml):
         'ordinal_number': get_value(xml, './t:ordinalNumber/text()', int)}
 
 
-def read_notification(xml):
+def read_notifications(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     notification = {
         'notification_number': get_xml_value('./t:notificationNumber/text()'),
@@ -50,7 +54,7 @@ def read_notification(xml):
     return [dict(lot.items() + notification.items()) for lot in lots]
 
 
-def read_contracts(xml):
+def read_contract(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     return {
         'id': get_xml_value('./t:id/text()', int),
@@ -58,10 +62,19 @@ def read_contracts(xml):
         'price': get_xml_value('./t:price/text()', float),
         'current_contract_stage': get_xml_value('./t:currentContractStage/text()'),
         'execution': "-".join([get_xml_value('./t:execution/t:year/text()'),
-                              get_xml_value('./t:execution/t:month/text()')])
+                               get_xml_value('./t:execution/t:month/text()')])
     }
 
 
 def read_protocol(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
 
+
+def read_customer(xml):
+    get_xml_value = lambda *args: get_value(xml, *args)
+    return {
+        'registration_number': get_xml_value('./t:regNumber/text()', int),
+        'inn': get_xml_value('./t:inn/text()', int),
+        'okato': get_xml_value('./t:factualAddress/t:OKATO/text()', int),
+        'name': get_xml_value('./t:fullName/text()')
+    }

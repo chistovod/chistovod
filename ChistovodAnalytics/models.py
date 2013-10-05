@@ -11,17 +11,20 @@ class NotificationOK(models.Model):
     reg_num = models.IntegerField()
     max_price = models.FloatField()
 
+
 class Customer(models.Model):
     registration_number = models.BigIntegerField()
     inn = models.BigIntegerField()
     okato = models.IntegerField()
     name = models.CharField(max_length=200)
 
+
 class Supplier(models.Model):
-    inn = models.CharField()
-    participant_type = models.CharField()
-    organization_form = models.CharField()
-    organization_name = models.CharField()
+    inn = models.CharField(max_length=100)
+    participant_type = models.CharField(max_length=100)
+    organization_form = models.CharField(max_length=100)
+    organization_name = models.CharField(max_length=100)
+
 
 class Contact(models.Model):
     last_name = models.CharField(max_length=100)

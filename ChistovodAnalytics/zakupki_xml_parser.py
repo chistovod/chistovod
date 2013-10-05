@@ -16,10 +16,14 @@ def dt(date):
     return datetime.strptime(date.strip(), '%Y-%m-%dT%H:%M:%S')
 
 
+def d(date):
+    return datetime.strptime(date.strip(), '%Y-%m-%d')
+
+
 def read_notification(xml):
     get_xml_value = lambda *args: get_value(xml, *args)
     return {
-        'notification_id': get_value(xml, './t:id/text()', int),
+        'notification_id': get_xml_value('./t:id/text()', int),
         'notification_number': get_xml_value('./t:notificationNumber/text()'),
         'create_date': get_xml_value('./t:createDate/text()', dt),
         'publish_date': get_xml_value('./t:publishDate/text()', dt),
@@ -29,6 +33,19 @@ def read_notification(xml):
         'max_price': get_xml_value(
             './t:lots/t:lot/t:customerRequirements/t:customerRequirement/t:maxPrice/text()', float, sum)
     }
+
+
+def read_contracts(xml):
+    get_xml_value = lambda *args: get_value(xml, *args)
+    return {
+        'id': get_xml_value('./t:id/text()', int),
+        'sign_date': get_xml_value('./t:signDate/text()', d),
+        'price': get_xml_value('./t:price/text()', float),
+        'current_contract_stage': get_xml_value('./t:currentContractStage/text()'),
+        'execution': "-".join([get_xml_value('./t:execution/t:year/text()'),
+                              get_xml_value('./t:execution/t:month/text()')])
+    }
+
 
 def read_protocol(xml):
     get_xml_value = lambda *args: get_value(xml, *args)

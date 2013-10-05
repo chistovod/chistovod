@@ -1,0 +1,15 @@
+<table border="1px" style="border-collapse: collapse">
+{% for instance in data %}
+    <tr>
+    <td>
+    {{ instance.notification_id }}
+    </td>
+    <td>
+    {{ instance.max_price }}
+    </td>
+    <td>
+    {{ instance.order_name }}
+    </td>
+    </tr>
+{% endfor %}
+</table>

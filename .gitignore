@@ -39,5 +39,6 @@ nosetests.xml
 .idea/misc.xml
 
 .idea/chistovod.iml
+marat.xml
 
 *.sqlite

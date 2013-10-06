@@ -5,10 +5,11 @@ from zipfile import ZipFile
 from os.path import expanduser
 
 from lxml import etree
+from django.db import transaction
 
 from zakupki_xml_parser import *
 
-#from models import *
+from models import *
 
 VALID_NOTIFICATIONS = re.compile('\}notification(OK|EF|ZK|PO)$')
 VALID_PROTOCOLS = re.compile('\}protocol(OK1|EF3|ZK1|ZK5|PO1)$')
@@ -17,22 +18,43 @@ VALID_FILE_PREFIXI = ['organization', 'notification', 'protocol', 'contract']
 ORDERS = tuple(enumerate(VALID_FILE_PREFIXI))
 
 
+@transaction.commit_manually
 def parse_file(f):
     for event, xml in etree.iterparse(f, huge_tree=True):
         if VALID_NOTIFICATIONS.search(str(xml.tag)):
-            for lot_dict in read_lots_from_notification(xml):
-                #Lot(**lot_dict).save()
-                print lot_dict
+            try:
+                for lot_dict in read_lots_from_notification(xml):
+                    try:
+                        pass
+                        Lot(**lot_dict).save()
+                    except Exception, ex:
+                        print ex, lot_dict
+            except Exception, ex:
+                print ex, xml.tag
         elif str(xml.tag).endswith('}organization'):
             cust_dict = read_customer(xml)
-            #Customer(**cust_dict).save()
-            print cust_dict
+            try:
+                pass
+                Customer(**cust_dict).save()
+            except Exception, ex:
+                print ex, cust_dict
         elif VALID_PROTOCOLS.search(str(xml.tag)):
             suppliers, contacts, supplier_to_lot = read_suppliers_and_contacts_from_protocols(xml)
-            #Supplier
-            #Contact
-            print suppliers
-            print contacts
+            for s, c, sl in zip(suppliers, contacts, supplier_to_lot):
+                Supplier(**s).save()
+                Contact(**c).save()
+                pass
+        elif str(xml.tag).endswith('}contract'):
+            contract_dict = read_contract(xml)
+            if not contract_dict['notification_number']:
+                continue
+            try:
+                pass
+                Contract(**contract_dict).save()
+            except Exception, ex:
+                print ex, contract_dict
+    transaction.commit()
+
 
 
 def process_file(f, filename):
@@ -76,6 +98,14 @@ def os_flat_walk(path):
 def process_all_files():
     path = os.path.join(expanduser('~'), 'zakupki.gov.ru')
     for filepath, order in sorted(os_flat_walk(path), key=itemgetter(1)):
+        if filepath.find('201308') == -1:
+            continue
+        if filepath.find('237') != -1:
+            continue
+        if filepath.find('235') != -1:
+            return
+
+
         process_any_file(filepath)
 
 

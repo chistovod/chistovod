@@ -28,6 +28,7 @@ class Lot(models.Model):
     final_price = models.FloatField(null=True, db_index=True)
     contract_sign_date = models.DateTimeField(null=True, db_index=True)
     execution_date = models.DateTimeField(null=True, db_index=True)
+    registration_number = models.BigIntegerField(db_index=True)
 
     customer_set = models.ManyToManyField(Customer, through='LotCustomer')
     supplier_set = models.ManyToManyField(Supplier, through='LotSupplier')

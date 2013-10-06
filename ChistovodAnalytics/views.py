@@ -1,7 +1,7 @@
 # Create your views here.
+from django.db import transaction
 from django.shortcuts import render_to_response
 from controllers import process_all_files
-from django.core import serializers
 from models import Lot
 
 

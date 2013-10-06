@@ -52,8 +52,7 @@ def read_lots_from_notification(xml):
         'publish_date': get_xml_value('./t:publishDate/text()', dt),
         'notification_name': get_xml_value('./t:orderName/text()'),
         'href': get_xml_value('./t:href/text()'),
-        'reg_num': get_xml_value('./t:order/t:placer/t:regNum/text()', int),
-
+        'registration_number': get_xml_value('./t:order/t:placer/t:regNum/text()', int),
         'final_price': None,
         'contract_sign_date': None,
         'execution_date': None}
@@ -107,7 +106,10 @@ def read_suppliers_and_contacts_from_protocols(xml):
                                          transform=identity,
                                          aggregate=nullable(null_value=[])):
             for participant_xml in get_value(application_xml, './t:applicationParticipants', transform=identity):
-                inn = get_value(participant_xml, './t:inn/text()', int)
+                inn = get_value(participant_xml, './t:inn/text()', int, nullable(null_value=None))
+                if not inn:
+                    print 'WARNING: INN is null'
+                    continue
                 form = get_value(participant_xml, './t:organizationForm/text()', aggregate=nullable())
                 name = get_value(participant_xml, './t:organizationName/text()', aggregate=nullable())
                 supplier = {
@@ -117,9 +119,9 @@ def read_suppliers_and_contacts_from_protocols(xml):
                 suppliers.append(supplier)
                 contact = {
                     'inn': inn,
-                    'last_name': get_value(participant_xml, './t:contactInfo/t:lastName/text()'),
-                    'first_name': get_value(participant_xml, './t:contactInfo/t:firstName/text()'),
-                    'middle_name': get_value(participant_xml, './t:contactInfo/t:middleName/text()'),
+                    'last_name': get_value(participant_xml, './t:contactInfo/t:lastName/text()', aggregate=nullable(null_value='')),
+                    'first_name': get_value(participant_xml, './t:contactInfo/t:firstName/text()', aggregate=nullable(null_value='')),
+                    'middle_name': get_value(participant_xml, './t:contactInfo/t:middleName/text()', aggregate=nullable(null_value='')),
                     'email': get_value(participant_xml, './t:contactInfo/t:contactEMail/text()', aggregate=nullable()),
                     'phone': get_value(participant_xml, './t:contactInfo/t:contactPhone/text()', phone,
                                        aggregate=nullable()),

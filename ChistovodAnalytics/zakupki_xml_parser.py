@@ -1,11 +1,18 @@
 from datetime import datetime
 from operator import itemgetter
+import re
+
+DIGITS = re.compile('[^\w]')
 
 identity = lambda x: x
 
 
 def strip(s):
     return s.strip()
+
+
+def nullable(aggregate_func=itemgetter(0), null_value=None):
+    return lambda lst: aggregate_func(lst) if lst else null_value
 
 
 def get_value(xml, xpath, transform=strip, aggregate=itemgetter(0)):
@@ -24,6 +31,10 @@ def dt(date):
 
 def d(date):
     return datetime.strptime(date.strip(), '%Y-%m-%d')
+
+
+def phone(s):
+    return DIGITS.sub('', s)
 
 
 def read_lot(xml):
@@ -63,6 +74,46 @@ def read_contract(xml):
         'execution': "-".join([get_xml_value('./t:execution/t:year/text()'),
                                get_xml_value('./t:execution/t:month/text()')])
     }
+
+
+def safe_concat(*nullable_strings):
+    """if all values are None than returns None"""
+    not_null_strings = [s for s in nullable_strings if s]
+    if not_null_strings:
+        return ' '.join(not_null_strings)
+    return None
+
+
+def read_suppliers_and_contacts_from_protocols(xml):
+    """Returns pair of Suppliers list and Contacts list"""
+    suppliers = []
+    contacts = []
+    for protocol_lot_xml in get_value(xml, './t:protocolLots', transform=identity):
+        for application_xml in get_value(protocol_lot_xml,
+                                         './t:applications',
+                                         transform=identity,
+                                         aggregate=nullable(null_value=[])):
+            for participant_xml in get_value(application_xml, './t:applicationParticipants', transform=identity):
+                inn = get_value(participant_xml, './t:inn/text()', int)
+                form = get_value(participant_xml, './t:organizationForm/text()', aggregate=nullable())
+                name = get_value(participant_xml, './t:organizationName/text()', aggregate=nullable())
+                supplier = {
+                    'inn': inn,
+                    'name': safe_concat(form, name)
+                }
+                suppliers.append(supplier)
+                contact = {
+                    'inn': inn,
+                    'last_name': get_value(participant_xml, './t:contactInfo/t:lastName/text()'),
+                    'first_name': get_value(participant_xml, './t:contactInfo/t:firstName/text()'),
+                    'middle_name': get_value(participant_xml, './t:contactInfo/t:middleName/text()'),
+                    'email': get_value(participant_xml, './t:contactInfo/t:contactEMail/text()', aggregate=nullable()),
+                    'phone': get_value(participant_xml, './t:contactInfo/t:contactPhone/text()', phone,
+                                       aggregate=nullable()),
+                    'fax': get_value(participant_xml, './t:contactInfo/t:contactFax/text()', phone, aggregate=nullable()),
+                }
+                contacts.append(contact)
+    return suppliers, contacts
 
 
 def read_customer(xml):

@@ -11,6 +11,7 @@ from zakupki_xml_parser import *
 #from models import *
 
 VALID_NOTIFICATIONS = re.compile('\}notification(OK|EF|ZK|PO)$')
+VALID_PROTOCOLS = re.compile('\}protocol(OK1|EF3|ZK1|ZK5|PO1)$')
 
 
 def parse_file(f):
@@ -23,6 +24,12 @@ def parse_file(f):
             cust_dict = read_customer(xml)
             #Customer(**cust_dict).save()
             print cust_dict
+        elif VALID_PROTOCOLS.search(str(xml.tag)):
+            suppliers, contacts = read_suppliers_and_contacts_from_protocols(xml)
+            #Supplier
+            #Contact
+            print suppliers
+            print contacts
 
 
 def process_file(f, filename):

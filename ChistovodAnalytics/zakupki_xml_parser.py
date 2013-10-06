@@ -85,10 +85,13 @@ def safe_concat(*nullable_strings):
 
 
 def read_suppliers_and_contacts_from_protocols(xml):
-    """Returns pair of Suppliers list and Contacts list"""
+    """Returns tuple of [Supplier] and [Contact] and [lot participant]"""
     suppliers = []
     contacts = []
-    for protocol_lot_xml in get_value(xml, './t:protocolLots', transform=identity):
+    lot_participants = []
+    notification_number = get_value(xml, './t:notificationNumber/text()')
+    for protocol_lot_xml in get_value(xml, './t:protocolLots', transform=identity, aggregate=nullable(null_value=[])):
+        lot_number = get_value(protocol_lot_xml, './t:lotNumber/text()', int)
         for application_xml in get_value(protocol_lot_xml,
                                          './t:applications',
                                          transform=identity,
@@ -113,7 +116,14 @@ def read_suppliers_and_contacts_from_protocols(xml):
                     'fax': get_value(participant_xml, './t:contactInfo/t:contactFax/text()', phone, aggregate=nullable()),
                 }
                 contacts.append(contact)
-    return suppliers, contacts
+                lot_participant = {
+                    'notification_number': notification_number,
+                    'lot_number': lot_number,
+                    'supplier_inn': inn
+                }
+                lot_participants.append(lot_participant)
+
+    return suppliers, contacts, lot_participants
 
 
 def read_customer(xml):

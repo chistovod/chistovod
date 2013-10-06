@@ -53,3 +53,12 @@ class Contact(models.Model):
     email = models.CharField(max_length=100, null=True)
     phone = models.CharField(max_length=50, null=True)
     fax = models.CharField(max_length=50, null=True)
+
+
+class Contract(models.Model):
+    notification_number = models.CharField(max_length=20)
+    lot_number = models.IntegerField()
+    sign_date = models.DateTimeField()
+    price = models.FloatField()
+    current_contract_stage = models.CharField(max_length=10)
+    execution = models.CharField(max_length=10)

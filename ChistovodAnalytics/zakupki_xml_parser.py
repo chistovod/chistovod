@@ -65,9 +65,19 @@ def read_lots_from_notification(xml):
 
 
 def read_contract(xml):
-    get_xml_value = lambda *args: get_value(xml, *args)
+    get_xml_value = lambda *args, **kwargs: get_value(xml, *args, **kwargs)
+    notification_number = get_xml_value('./t:foundation/t:order/t:notificationNumber/text()',
+                                        aggregate=nullable(null_value=""))
+    if notification_number:
+        lot_number = get_xml_value('./t:foundation/t:order/t:lotNumber/text()', int)
+    else:
+        notification_number = get_xml_value('./t:foundation/t:other/t:notificationNumber/text()',
+                                            aggregate=nullable(null_value=""))
+        lot_number = 1
+
     return {
-        'id': get_xml_value('./t:id/text()', int),
+        'notification_number': notification_number,
+        'lot_number': lot_number,
         'sign_date': get_xml_value('./t:signDate/text()', d),
         'price': get_xml_value('./t:price/text()', float),
         'current_contract_stage': get_xml_value('./t:currentContractStage/text()'),

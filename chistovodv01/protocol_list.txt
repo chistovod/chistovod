@@ -1,0 +1,45 @@
+orderClause - Положение о закупке товаров, работ, услуг
+purchaseNoticeOK -  Извещение о закупке "Открытый конкурс"
+purchaseNoticeOA -  Извещение о закупке "Открытый Аукцион"
+purchaseNotice - Извещение о закупке "Иной способ"
+purchaseNoticeZK - Извещение о закупке "Запрос котировок"
+purchaseNoticeEP - Извещение о закупке "Закупка у единственного поставщика"
+purchaseNoticeAE - Извещение о закупке "Аукцион в электронной форме"
+purchaseNoticeAE94FZ - Извещение о закупке "Аукцион в электронной форме (по 94ФЗ)"
+
+
+purchaseProtocolRZ1AE - Протокол рассмотрения первых частей заявок для аукциона в электронной форме
+purchaseProtocolRZOK - Протокол рассмотрения заявок для открытого конкурса
+purchaseProtocolRZOA - Протокол рассмотрения заявок для открытого аукциона
+purchaseProtocolRZAE - Протокол рассмотрения заявок для аукциона в электронной форме
+purchaseProtocolRZ2AE- Протокол рассмотрения вторых частей заявок для аукциона в электронной форме
+
+
+purchaseProtocolPAEP - Протокол проведения закупки у единственного поставщика
+purchaseProtocolPAAE94FZ - Протокол проведения аукциона для открытого аукциона в электронной форме (по 94ФЗ)
+purchaseProtocolPAAE - Протокол проведения аукциона для открытого аукциона в электронной форме
+purchaseProtocolPAOA - Протокол проведения аукциона для открытого аукциона
+
+purchaseProtocolOSZ - Протокол оценки и сопоставления заявок
+purchaseProtocolZK - Протокол запроса котировок
+purchaseProtocol - Протокол закупки
+
+purchaseProtocolVK - Протокол вскрытия конвертов
+protocolCancellation - Сведения об отмене протокола
+purchaseContractAccount - Отчетность о договорах
+
+
+purchaseContract  - Договор закупки
+contract  - Сведения о договоре
+
+
+
+subcontractorInfo - Сведения о договоре с субподрядчиком
+contractCancellation - Сведения об расторжении договора
+performanceContract - Сведения об исполнении договора
+changeRequirements - Уточненные требования
+purchaseLotCancellation  - Сведения об отмене лотов закупки
+protocolLotAllocation - Сведения о выделении лотов в отдельный протокол
+explanation - Разъяснение
+purchaseRejection - Извещение об отказе от проведения закупки
+purchasePlan - План закупки
